@@ -1,0 +1,214 @@
+ /*******************************************************************
+ * Board: Arduino Mega (ATMega2560)
+ * Developed by: Akshay P Daga       Email: apdaga@gmail.com
+ * 
+ * PROBLEM STATEMENT:
+ * This code is Turn ON and OFF the LED using Serial Communication 
+ * using BLUETOOTH MODULE HC-05 (Bluetooth 2.0).
+ * 
+ * PROGRAM OUTCOME:
+ * If pressed "a" on computer keyboard -> LED will be ON
+ * If presses "b" on computer keyboard -> LED will be OFF
+********************************************************************/
+
+/****************************************************************
+ * STEPS:
+ * 1. Install Bluetooth Terminal app (By Juan Sebastian Ochoa Zambrano) on Android mobile from Play Store.
+ * 2. Make Physical Connections of the BLuetooth Module (HC-05) as given above.
+ * 3. On Android mobile, Search for Bluetooth and Connect to HC-05 and pair it using password "0000" or "1234". 
+ * 4. Open Bluetooth Terminal App on the Mobile and connect to paired HC-05 module. 
+ ***************************************************************/
+
+/****************************************************************** 
+ * PHYSICAL CONNECTIONS: 
+ * Arduino Mega  ->  Bluetooth Module 
+ * Pin 18 (Tx1)  ->  Rx
+ * Pin 19 (Rx1)  ->  Tx
+ * Gnd           ->  GND
+ * Vcc           ->  VCC (+5V)
+ * 
+ * Pin 13 -> LED+  
+ * Gnd    -> LED-
+ * Serial Communication through USB cable (Tx0 and Rx0)
+ * Arduino Terminal (Desktop) is used just to cross verify.
+ *****************************************************************/
+unsigned int A=0,B=0,C=0;
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600); //Tx0 and Rx0  //Set Baud Rate to 9600 for Serial Communication Tx0 and Rx0
+  Serial1.begin(9600);  //Tx1 and Rx1  //Connected to Bluetooth Module HC-05 (Bluetooth 2.0)
+  //Serial2;  //Tx2 and Rx2
+  //Serial3;  //Tx3 and Rx3
+
+  pinMode(5, OUTPUT);  //Set Pin 1 as Output - Front LED
+  pinMode(2, OUTPUT);  //Set Pin 2 as Output - Rear LED
+  pinMode(3, OUTPUT);  //Set Pin 3 as Output - Parking LED
+  pinMode(4, OUTPUT);  //Set Pin 4 as Output - Parking LED
+  pinMode(6, OUTPUT);  //Set Pin 5 as Output - crank LED
+
+  /*Serial.println("Enter the pin number");  //To Desktop
+  Serial1.println("Enter the pin number"); //To mobile
+  for (int i = 0; i < 6; i++)
+  {
+  delay (1000);
+  if(Serial1.available ()>0)
+  {
+    int buffer_value = Serial1.read();
+    if(buffer_value == 'P')
+    {
+      digitalWrite(13, HIGH);    //Turn ON LED
+      Serial.println("Correct pin");  //Arduino Terminal of Desktop 
+      Serial1.println("Correct pin"); //Bluetooth Terminal on Mobile
+      A = 1;
+      break;
+    }
+    else if(buffer_value != 'P')
+    {
+      digitalWrite(13, LOW);      //Turn OFF LED
+      Serial.println("wrong pin");  //Arduino Terminal on Desktop
+      Serial1.println("wrong pin"); //Bluetooth Terminal on Mobile 
+      i = 0;
+    }
+  }
+  }*/
+
+Serial.println("A-> Door unlock");  //To Desktop
+Serial.println("B-> Rear light on");  //To Desktop
+Serial.println("C-> Front light on");  //To Desktop
+Serial.println("D-> Parking light on");  //To Desktop
+Serial.println("E-> All light Off");  //To Desktop
+Serial.println("F-> Engine Start");  //To Desktop
+Serial.println("G-> Engine Off");  //To Desktop
+Serial.println("H-> Door Lock");  //To Desktop
+
+Serial1.println("A-> Door unlock");  //To mobile
+Serial1.println("B-> Rear light on");  //To mobile
+Serial1.println("C-> Front light on");  //To mobile
+Serial1.println("D-> Parking light on");  //To mobile
+Serial1.println("E-> All light Off");  //To mobile
+Serial1.println("F-> Engine Start");  //To mobile
+Serial1.println("G-> Engine Off");  //To mobile
+Serial1.println("H-> Door Lock");  //To mobile
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+  if(Serial1.available ()>0)
+  {
+    int buffer_value = Serial1.read();
+    if(buffer_value == 'A')
+    { 
+      Serial.println("Door Unlock");  //Arduino Terminal of Desktop 
+      Serial1.println("Door Unlock"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, HIGH);    //Turn ON Parking LED
+      digitalWrite(4, HIGH);    //Turn ON Parking LED
+      delay (250);
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      delay (250);
+      digitalWrite(3, HIGH);    //Turn ON Parking LED
+      digitalWrite(4, HIGH);    //Turn ON Parking LED
+      delay (250);
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      delay (250); 
+    }
+    else if(buffer_value == 'B')
+    {
+      Serial.println("Rear Light On");  //Arduino Terminal of Desktop 
+      Serial1.println("Rear Light On"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(2, HIGH);    //Turn On Rear LED
+    }
+    else if(buffer_value == 'C')
+    {
+      Serial.println("Front Light On");  //Arduino Terminal of Desktop 
+      Serial1.println("Front Light On"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(5, HIGH);    //Turn On Front LED
+    }
+    else if(buffer_value == 'D')
+    {
+      Serial.println("Parking Light On");  //Arduino Terminal of Desktop 
+      Serial1.println("Parking Light On"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(3, HIGH);    //Turn ON Parking LED
+      digitalWrite(4, HIGH);    //Turn ON Parking LED
+      delay (1000);
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      delay (1000);
+      digitalWrite(3, HIGH);    //Turn ON Parking LED
+      digitalWrite(4, HIGH);    //Turn ON Parking LED
+      delay (1000);
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      delay (1000); 
+    }
+    else if(buffer_value == 'E')
+    {
+      Serial.println("All light off");  //Arduino Terminal of Desktop 
+      Serial1.println("All light off"); //Bluetooth Terminal on Mobile
+      digitalWrite(1, LOW);    //Turn OFF Front LED
+      digitalWrite(2, LOW);    //Turn OFF Rear LED
+      digitalWrite(3, LOW);    //Turn parking Front LED
+      digitalWrite(4, LOW);    //Turn parking Front LED
+      digitalWrite(5, LOW);    //Turn parking Front LED
+      
+    }
+    else if(buffer_value == 'F')
+    {
+      Serial.println("Engine on");  //Arduino Terminal of Desktop 
+      Serial1.println("Engine on"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(6, HIGH);    //Turn on Engine LED
+    }
+        else if(buffer_value == 'G')
+    {
+      Serial.println("Engine off");  //Arduino Terminal of Desktop 
+      Serial1.println("Engine off"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(6, LOW);    //Turn off Engine LED
+    }
+    else if(buffer_value == 'H')
+    {
+      Serial.println("Door lock");  //Arduino Terminal of Desktop 
+      Serial1.println("Door lock"); //Bluetooth Terminal on Mobile
+      digitalWrite(2, LOW);    //Turn OFF REAR LED
+      digitalWrite(5, LOW);    //Turn Front LED
+      digitalWrite(6, LOW);    //Turn OFF CRANK LED
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+      digitalWrite(3, HIGH);    //Turn ON Parking LED
+      digitalWrite(4, HIGH);    //Turn ON Parking LED
+      delay (2000);
+      digitalWrite(3, LOW);    //Turn OFF Parking LED
+      digitalWrite(4, LOW);    //Turn OFF Parking LED
+    }
+  }
+}
